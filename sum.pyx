@@ -1,16 +1,28 @@
 cimport numpy as np
+import numpy as np
 cimport cython
 from cython.parallel import prange
 
-@cython.initializedcheck(False)
-@cython.boundscheck(True)
-@cython.wraparound(False)
-@cython.cdivision(True)
-def fun_sum(np.float64_t[:] result):
+def fun_sum():
 
+    cdef np.float64_t[:] result = np.zeros(1)
     cdef int j
     cdef np.float64_t a = 3.0
 
     with nogil:
-        for j in prange(0, 10):
-            result[0] = result[0] + a
+        for j in prange(0, 10000):
+            result[0] += a + j
+
+    return np.array(result)
+
+def fun_sum_scalar():
+
+    cdef np.float64_t result = 0
+    cdef int j
+    cdef np.float64_t a = 3.0
+
+    with nogil:
+        for j in prange(0, 10000):
+            result += a + j
+
+    return result

@@ -12,6 +12,6 @@ ext_modules = [
 ]
 
 setup(
-    name='bug',
+    name='sum',
     ext_modules=cythonize(ext_modules),
 )
