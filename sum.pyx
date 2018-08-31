@@ -2,27 +2,30 @@ cimport numpy as np
 import numpy as np
 cimport cython
 from cython.parallel import prange
+from libc.stdlib cimport malloc
 
-def fun_sum():
-
-    cdef np.float64_t[:] result = np.zeros(1)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def sum():
+    cdef np.float64_t * result
+    result = <np.float64_t *> malloc(sizeof(np.float64_t))
     cdef int j
-    cdef np.float64_t a = 3.0
 
     with nogil:
-        for j in prange(0, 10000):
-            result[0] += a + j
+        for j in prange(0, 10000000):
+            result[0] += j
 
-    return np.array(result)
+    return result[0]
 
-def fun_sum_scalar():
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def sum_scalar():
 
     cdef np.float64_t result = 0
     cdef int j
-    cdef np.float64_t a = 3.0
 
     with nogil:
-        for j in prange(0, 10000):
-            result += a + j
+        for j in prange(0, 10000000):
+            result += j
 
     return result
